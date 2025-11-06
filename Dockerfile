@@ -18,30 +18,21 @@ COPY . .
 RUN composer install --no-dev --optimize-autoloader
 
 # --------------------------------------------------------
-# ✅ Skip npm build inside container (Option 1)
+# ✅ We skip npm install/build inside container
+#    Public/build assets must already exist from your local npm run build.
 # --------------------------------------------------------
-# Instead, we’ll assume the public/build folder is already generated locally.
-# If you haven't built locally yet, run these on your computer first:
-#   npm install
-#   npm run build
-# Then commit public/build to GitHub before deploying.
 
-# Just make sure vite is globally available (for Inertia)
-RUN npm install -g vite
-
-# --------------------------------------------------------
-# Permissions and Apache setup
-# --------------------------------------------------------
+# Set correct permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-# Expose port
-EXPOSE 8080
 
 # Enable Apache rewrite rules for Laravel
 RUN echo '<Directory /var/www/html/>\n\
     AllowOverride All\n\
 </Directory>' > /etc/apache2/conf-available/laravel.conf && \
     a2enconf laravel
+
+# Expose port 8080
+EXPOSE 8080
 
 # Start Apache
 CMD ["apache2-foreground"]
