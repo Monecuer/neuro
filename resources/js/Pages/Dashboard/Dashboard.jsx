@@ -30,7 +30,7 @@ import Summaries from "./Partials/Summaries";
 import { SalesChart } from "./Partials/SalesChart";
 import { OverViewCards } from "./Partials/OverViewCards";
 import { DatePicker } from "@mui/x-date-pickers";
-import MUIDatePicker from "@/Components/ui/MUIDatePicker";
+import MUIDatePicker from "@/components/ui/MUIDatePicker";
 import { DatabaseBackup } from "lucide-react";
 
 export default function Dashboard({ data, logo, version, store_name }) {

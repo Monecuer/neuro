@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Swal from "sweetalert2";
 import { useState, useEffect } from "react";
 import ChargeDialog from "./Partials/ChargeDialog";
-import CustomPagination from "@/Components/CustomPagination";
+import CustomPagination from "@/components/CustomPagination";
 
 export default function ChargesIndex({
     charges,

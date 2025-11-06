@@ -15,7 +15,7 @@ import dayjs from "dayjs";
 import numeral from "numeral";
 
 import { DataGrid } from "@mui/x-data-grid";
-import CustomPagination from "@/Components/CustomPagination";
+import CustomPagination from "@/components/CustomPagination";
 import ChequeFormDialog from "./ChequeFormDialog";
 
 const columns = (handleRowClick) => [

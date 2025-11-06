@@ -21,7 +21,7 @@ import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Barcode } from 'lucide-react';
 import BatchModal from "./Partials/BatchModal";
 import QuantityModal from "./Partials/QuantityModal";
-import CustomPagination from "@/Components/CustomPagination";
+import CustomPagination from "@/components/CustomPagination";
 import { useState } from "react";
 import numeral from "numeral";
 import { useEffect } from "react";

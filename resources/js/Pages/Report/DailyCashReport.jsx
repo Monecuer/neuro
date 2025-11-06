@@ -13,7 +13,7 @@ import axios from "axios";
 import numeral from "numeral";
 
 import DailyCashDialog from "./Partial/DailyCashDialog";
-import ViewDetailsDialog from "@/Components/ViewDetailsDialog";
+import ViewDetailsDialog from "@/components/ViewDetailsDialog";
 
 export default function DailyReport({ logs, stores, users }) {
     const auth = usePage().props.auth.user

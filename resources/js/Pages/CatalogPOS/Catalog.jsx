@@ -5,7 +5,7 @@ import Tab from '@mui/material/Tab';
 import { useSales as useCart } from '@/Context/SalesContext';
 import { Banknote, CheckCircle2, ShoppingCart } from 'lucide-react';
 import numeral from 'numeral';
-import PaymentsCheckoutDialog from '@/Components/PaymentsCheckoutDialog';
+import PaymentsCheckoutDialog from '@/components/PaymentsCheckoutDialog';
 import dayjs from 'dayjs';
 
 const Catalog = ({ open, id, onClose }) => {

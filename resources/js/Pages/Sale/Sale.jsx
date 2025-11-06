@@ -13,9 +13,9 @@ import PrintIcon from "@mui/icons-material/Print";
 import KeyboardReturnIcon from '@mui/icons-material/KeyboardReturn';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import EditIcon from "@mui/icons-material/Edit";
-import AddPaymentDialog from "@/Components/AddPaymentDialog";
-import ViewDetailsDialog from "@/Components/ViewDetailsDialog";
-import CustomPagination from "@/Components/CustomPagination";
+import AddPaymentDialog from "@/components/AddPaymentDialog";
+import ViewDetailsDialog from "@/components/ViewDetailsDialog";
+import CustomPagination from "@/components/CustomPagination";
 
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
