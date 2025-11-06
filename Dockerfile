@@ -1,38 +1,34 @@
-# ---- Base image ----
-FROM php:8.2-apache
+# ---------- Build Stage ----------
+FROM node:18 as build
 
-# Install required system packages and PHP extensions
-RUN apt-get update && apt-get install -y \
-    git unzip curl zip libpq-dev libzip-dev libpng-dev libonig-dev libxml2-dev gnupg \
-    && docker-php-ext-install pdo_mysql mbstring zip exif pcntl bcmath gd \
-    && a2enmod rewrite
+WORKDIR /app
 
-# Set working directory
-WORKDIR /var/www/html
-
-# Copy composer and install PHP dependencies
-COPY --from=composer:2.7 /usr/bin/composer /usr/bin/composer
+# Copy Laravel and frontend sources
 COPY . .
 
-# Install PHP dependencies (skip dev)
-RUN composer install --no-dev --optimize-autoloader
+# Install PHP dependencies later, but build frontend now
+RUN npm ci && npm run build
 
-# --------------------------------------------------------
-# ✅ We skip npm install/build inside container
-#    Public/build assets must already exist from your local npm run build.
-# --------------------------------------------------------
+# ---------- Production Stage ----------
+FROM php:8.2-apache
 
-# Set correct permissions for Laravel
+WORKDIR /var/www/html
+
+# Enable needed PHP extensions
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Copy project files
+COPY --from=build /app /var/www/html
+
+# Copy production environment config
+COPY --from=build /app/public /var/www/html/public
+
+# Set correct permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Enable Apache rewrite rules for Laravel
-RUN echo '<Directory /var/www/html/>\n\
-    AllowOverride All\n\
-</Directory>' > /etc/apache2/conf-available/laravel.conf && \
-    a2enconf laravel
+# Set up Apache
+RUN a2enmod rewrite
+COPY ./.docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
-# Expose port 8080
 EXPOSE 8080
-
-# Start Apache
 CMD ["apache2-foreground"]
