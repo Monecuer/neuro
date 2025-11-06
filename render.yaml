@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: neurapos
+    env: docker
+    plan: free
+    branch: main
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: APP_KEY
+        value: base64:5wy8QLoa2SV5Q/pE6z6QPW/QJR/CrjGURfKHXJK1O34=
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_URL
+        value: https://neurapos.onrender.com
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: neuraposn-neurapos.e.aivencloud.com
+      - key: DB_PORT
+        value: 20120
+      - key: DB_DATABASE
+        value: defaultdb
+      - key: DB_USERNAME
+        value: avnadmin
+      - key: DB_PASSWORD 
+        sync: false
+      - key: MYSQL_ATTR_SSL_CA
+        value: /etc/ssl/certs/ca-certificates.crt
+      - key: APP_TIMEZONE
+        value: Africa/Harare
