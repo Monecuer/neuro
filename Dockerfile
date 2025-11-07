@@ -1,35 +1,31 @@
-# ---------- Build Stage ----------
-FROM node:18 as build
-
-WORKDIR /app
-
-# Copy Laravel and frontend sources
-COPY . .
-# Install frontend dependencies and build assets
-RUN npm install --legacy-peer-deps
-RUN npm run build || echo "⚠️ Vite build failed — skipping temporarily"
-
-
-# ---------- Production Stage ----------
-FROM php:8.2-apache
+# ---------- Stage 1: Build frontend and install dependencies ----------
+FROM php:8.2-apache AS base
 
 WORKDIR /var/www/html
 
-# Enable needed PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql
+# Install system tools and node for Vite
+RUN apt-get update && apt-get install -y \
+    git curl zip unzip nodejs npm \
+    && docker-php-ext-install pdo pdo_mysql \
+    && a2enmod rewrite
 
-# Copy project files
-COPY --from=build /app /var/www/html
+# Copy composer from official image
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Copy production environment config
-COPY --from=build /app/public /var/www/html/public
+# Copy all files
+COPY . .
 
-# Set correct permissions
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Build frontend
+RUN npm install --legacy-peer-deps && npm run build
+
+# Fix permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Set up Apache
-RUN a2enmod rewrite
-COPY ./.docker/apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-
+# Expose port 8080 for Render
 EXPOSE 8080
+
+# Start Apache
 CMD ["apache2-foreground"]
