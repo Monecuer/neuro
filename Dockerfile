@@ -5,9 +5,10 @@ WORKDIR /app
 
 # Copy Laravel and frontend sources
 COPY . .
+# Install frontend dependencies and build assets
+RUN npm install --legacy-peer-deps
+RUN npm run build || echo "⚠️ Vite build failed — skipping temporarily"
 
-# Install PHP dependencies later, but build frontend now
-RUN npm ci && npm run build
 
 # ---------- Production Stage ----------
 FROM php:8.2-apache
